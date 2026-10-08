@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Forex Rate History</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+
+        <!-- Header -->
+
+        <div class="header">
+
+            <h1>Forex Rate History</h1>
+
+            <p>
+                Historical USD/INR and EUR/INR Exchange Rates
+            </p>
+
+        </div>
+
+
+        <!-- History Card -->
+
+        <div class="card">
+
+            <h2>📊 Exchange Rate History</h2>
+
+            {% if rates %}
+
+            <table>
+
+                <tr>
+
+                    <th>S.No</th>
+
+                    <th>Currency Pair</th>
+
+                    <th>Exchange Rate</th>
+
+                    <th>Date</th>
+
+                </tr>
+
+
+                {% for rate in rates %}
+
+                <tr>
+
+                    <td>
+                        {{ loop.index }}
+                    </td>
+
+                    <td>
+
+                        {% if rate[0] == "USD/INR" %}
+
+                            💵 USD / INR
+
+                        {% elif rate[0] == "EUR/INR" %}
+
+                            💶 EUR / INR
+
+                        {% else %}
+
+                            {{ rate[0] }}
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        ₹{{ "%.2f"|format(rate[1]) }}
+
+                    </td>
+
+                    <td>
+
+                        {{ rate[2] }}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+            {% else %}
+
+            <div class="empty-message">
+
+                <h3>No Rate History Available</h3>
+
+                <p>
+                    Compare a remittance amount first to save
+                    today's exchange rates.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Navigation -->
+
+        <div class="nav">
+
+            <a href="/">
+                🏠 Home
+            </a>
+
+            <a href="/compare">
+                💱 Remittance Calculator
+            </a>
+
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>

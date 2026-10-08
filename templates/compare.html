@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Remittance Calculator</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+
+        <div class="header">
+
+            <h1>Remittance Cost Comparator</h1>
+
+            <p>
+                Compare different remittance providers
+            </p>
+
+        </div>
+
+
+        <!-- ERROR MESSAGE -->
+
+        {% if message %}
+
+        <div class="card error-message">
+
+            <strong>
+                ⚠️ {{ message }}
+            </strong>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- AMOUNT INPUT -->
+
+        <div class="card">
+
+            <h2>💵 Enter Amount</h2>
+
+            <form
+                action="/compare"
+                method="POST"
+            >
+
+                <label>
+                    Amount in USD:
+                </label>
+
+                <br>
+
+                <input
+                    type="number"
+                    name="amount"
+                    step="0.01"
+                    min="0.01"
+                    placeholder="Enter amount"
+                    required
+                >
+
+                <br>
+
+                <button type="submit">
+                    Compare Providers
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- COMPARISON RESULTS -->
+
+        {% if results %}
+
+        <div class="card">
+
+            <h2>📊 Comparison Results</h2>
+
+
+            <!-- AMOUNT -->
+
+            <p>
+
+                <strong>
+                    Amount:
+                </strong>
+
+                ${{ "%.2f"|format(amount) }}
+
+            </p>
+
+
+            <!-- CURRENT RATE -->
+
+            <p>
+
+                <strong>
+                    Current USD/INR Rate:
+                </strong>
+
+                ₹{{ "%.2f"|format(base_rate) }}
+
+            </p>
+
+
+            <!-- BEST PROVIDER -->
+
+            {% if best_provider %}
+
+            <div class="best-provider">
+
+                <h3>
+                    🏆 Highest Amount Received
+                </h3>
+
+                <p>
+
+                    <strong>
+                        {{ best_provider["provider"] }}
+                    </strong>
+
+                </p>
+
+                <p>
+
+                    Amount Received:
+
+                    <strong>
+                        ₹{{ "%.2f"|format(
+                            best_provider["received_amount"]
+                        ) }}
+                    </strong>
+
+                </p>
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- PROVIDER COMPARISON TABLE -->
+
+            <table>
+
+                <tr>
+
+                    <th>
+                        Provider
+                    </th>
+
+                    <th>
+                        Fee
+                    </th>
+
+                    <th>
+                        Effective Rate
+                    </th>
+
+                    <th>
+                        Amount Received
+                    </th>
+
+                </tr>
+
+
+                {% for result in results %}
+
+                <tr>
+
+                    <td>
+                        {{ result["provider"] }}
+                    </td>
+
+                    <td>
+                        ${{ "%.2f"|format(result["fee"]) }}
+                    </td>
+
+                    <td>
+                        ₹{{ "%.2f"|format(
+                            result["effective_rate"]
+                        ) }}
+                    </td>
+
+                    <td>
+                        ₹{{ "%.2f"|format(
+                            result["received_amount"]
+                        ) }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- NAVIGATION -->
+
+        <div class="nav">
+
+            <a href="/">
+                🏠 Home
+            </a>
+
+            <a href="/history">
+                📊 Rate History
+            </a>
+
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>

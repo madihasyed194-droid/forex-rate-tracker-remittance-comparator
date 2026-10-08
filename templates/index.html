@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Forex Rate Tracker</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+
+            <h1>Forex Rate Tracker</h1>
+
+            <p>
+                Forex Rate Tracker & Remittance Cost Comparator
+            </p>
+
+        </div>
+
+
+        <!-- Current Rates -->
+
+        <div class="card">
+
+            <h2>📈 Current Exchange Rates</h2>
+
+            {% if rates %}
+
+            <div class="rates">
+
+                <div class="rate-box">
+
+                    <h3>USD / INR</h3>
+
+                    <p>
+                        ₹{{ "%.2f"|format(rates["USD/INR"]) }}
+                    </p>
+
+                </div>
+
+
+                <div class="rate-box">
+
+                    <h3>EUR / INR</h3>
+
+                    <p>
+                        ₹{{ "%.2f"|format(rates["EUR/INR"]) }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <p>
+                Rate Date:
+                <strong>{{ rates["date"] }}</strong>
+            </p>
+
+            {% else %}
+
+            <p>
+                Unable to fetch exchange rates.
+            </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Project Description -->
+
+        <div class="card">
+
+            <h2>Welcome</h2>
+
+            <p>
+                This application fetches current USD/INR and EUR/INR
+                exchange rates and compares remittance costs between
+                different providers.
+            </p>
+
+
+            <div class="nav">
+
+                <a href="/compare">
+                    💱 Remittance Calculator
+                </a>
+
+                <a href="/history">
+                    📊 Rate History
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
